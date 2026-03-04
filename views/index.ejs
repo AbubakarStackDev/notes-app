@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>All Notes</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:20px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.logout-btn{
+    text-decoration:none;
+    background:#dc3545;
+    color:white;
+    padding:8px 12px;
+    border-radius:5px;
+}
+
+form{
+    margin-bottom:20px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    padding:8px 14px;
+    cursor:pointer;
+    border:none;
+    background:#007bff;
+    color:white;
+    border-radius:5px;
+}
+
+.note-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.note-text{
+    flex:1;
+    min-width:200px;
+}
+
+.note-actions a{
+    margin-right:10px;
+    text-decoration:none;
+    color:blue;
+}
+
+@media (max-width:600px){
+    body{
+        margin:10px;
+    }
+
+    .note-item{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    button{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>All Notes</h1>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+<form action="/notes/note" method="POST">
+<input type="text" name="title" placeholder="Note Title" required>
+<textarea name="content" placeholder="Note Content" required></textarea>
+<button type="submit">Add Note</button>
+</form>
+
+<% allNotes.forEach(note => { %>
+  <% if(allNotes.length === 0){ %>
+<p>No notes available. Add your first note!</p>
+<% } %>
+<div class="note-item">
+
+<div class="note-text">
+<strong><%= note.title %></strong><br>
+<small>
+<%= new Date(note.createdAt).toLocaleString() %>
+</small><br>
+<%= note.content %>
+</div>
+
+<div class="note-actions">
+<a href="/notes/edit/<%= note._id %>">Edit</a>
+
+<form action="/notes/delete/<%= note._id %>" method="POST" style="display:inline;">
+<button type="submit">Delete</button>
+</form>
+</div>
+
+</div>
+
+<% }) %>
+
+</body>
+</html>
